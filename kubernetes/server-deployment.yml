@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: server
+  template:
+    metadata:
+      labels:
+        component: server
+    spec:
+      containers:
+        - name: server
+          image: rkvishnu77/jobconnect-server
+          ports:
+            - containerPort: 5000
+          env:
+            - name: HOST
+              value: mongodb-service
+            - name: PORT
+              value: "27017"
+            - name: PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongopassword
+                  key: MONGOPASSWORD

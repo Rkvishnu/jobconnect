@@ -858,6 +858,7 @@ router.put("/applications/:id", jwtAuth, (req, res) => {
           },
         }
       )
+      
         .then((tmp) => {
           console.log(tmp);
           res.json({

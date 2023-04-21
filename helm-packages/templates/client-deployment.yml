@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.Values.clientDeployment.name}}
+spec:
+  replicas: {{.Values.clientDeployment.replicas}}
+  selector:
+    matchLabels:
+      component: web
+  template:
+    metadata:
+      labels:
+        component: web
+    spec:
+      containers:
+        - name: client
+          image: {{.Values.clientDeployment.image}}
+          resources:
+          ports:
+            - containerPort: {{.Values.clientDeployment.containerPort}}

@@ -1,0 +1,32 @@
+ appService:
+  namespace: default
+  name: client-service
+  type: ClusterIp
+  protocol: TCP
+  port: 3000
+  targetPort: 3000
+appDeployment:
+  namespace: default
+  name: client-deployment
+  replicas: 1
+  image: rkvishnu77/jobconnect-client
+  containerPort: 3000
+
+serverService:
+  namespace: default
+  name: server-service
+  type: ClusterIp
+  app: server
+  protocol: TCP
+  port: 5000
+  targetPort: 5000
+  imagePullPolicy: Always
+
+serverDeployment:
+  namespace: default
+  name: server-deployment
+  app: server
+  replicas: 1
+  image: rkvishnu77/jobconnect-server
+  containerPort: 5000
+  imagePullPolicy: Always

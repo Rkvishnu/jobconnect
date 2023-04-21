@@ -1,0 +1,44 @@
+version: "3.9"
+services:
+  mongodb:
+    container_name: mongodb
+    image: mongo
+    ports:
+      -  27017
+
+  server:
+    container_name: server
+    image: rkvishnu77/jobconnect-server
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017
+    ports:
+      -  3000:3000
+    depends_on:
+      - mongodb
+    restart: unless-stopped
+  
+  client:
+    container_name: client
+    image: rkvishnu77/jobconnect-client
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - 5000:5000
+    restart: unless-stopped
+
+  nginx-proxy:
+    container_name: proxy
+    image: rkvishnu77/jobconnect-nginx-proxy
+    build:
+      context: ./nginx/
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+    restart: unless-stopped
+    depends_on:
+      - server
+      - client
